@@ -1,0 +1,11 @@
+{
+  "name": "bookstay-backend",
+  "version": "1.0.0",
+  "description": "Backend service for the BookStay hotel booking application",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "private": true
+}
