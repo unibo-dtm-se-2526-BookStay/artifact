@@ -1,0 +1,20 @@
+openapi: 3.0.3
+
+info:
+  title: BookStay Backend API
+  version: 1.0.0
+  description: API for the BookStay hotel booking application
+
+paths:
+  /api/v1/health:
+    get:
+      summary: Check API health
+      operationId: getHealth
+      responses:
+        '200':
+          description: The API is running
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: API Working!

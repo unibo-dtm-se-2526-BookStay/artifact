@@ -2,10 +2,31 @@
   "name": "bookstay-backend",
   "version": "1.0.0",
   "description": "Backend service for the BookStay hotel booking application",
-  "scripts": {},
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
-  "private": true
+  "private": true,
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cloudinary": "^2.10.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.9.1",
+    "multer": "^2.2.0",
+    "validator": "^13.15.35"
+  },
+  "devDependencies": {
+    "jest": "^30.4.2",
+    "nodemon": "^3.1.14",
+    "supertest": "^7.2.2"
+  }
 }
