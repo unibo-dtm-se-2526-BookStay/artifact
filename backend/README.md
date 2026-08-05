@@ -17,6 +17,19 @@ npm ci
 
 Create a local environment file from `.env.example`. Never commit `.env`.
 
+## Environment variables
+
+Create `.env` from `.env.example` and configure:
+
+- `PORT`: optional HTTP port; defaults to `4000`.
+- `MONGODB_URI`: required MongoDB connection string.
+
+Never commit `.env` or expose the MongoDB URI.
+
+## Database
+
+The backend connects to the `hotel` database through Mongoose. The server waits for the database connection before accepting HTTP requests.
+
 ## Available scripts
 
 ```bash
