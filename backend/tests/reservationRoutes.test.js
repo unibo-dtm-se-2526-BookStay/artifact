@@ -90,4 +90,48 @@ describe('Reservation routes', () => {
     expect(response.body.message).toBe('Reservation deleted successfully')
     expect(mockFindByIdAndDelete).toHaveBeenCalledWith('123')
   })
+
+  test('GET /api/v1/reservations/get handles model errors', async () => {
+    mockFind.mockRejectedValue(new Error('Database error'))
+
+    const response = await request(app).get('/api/v1/reservations/get')
+
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual({
+      message: 'Error fetching reservations'
+    })
+  })
+
+  test('POST /api/v1/reservations/create handles save errors', async () => {
+    mockSave.mockRejectedValue(new Error('Save error'))
+
+    const response = await request(app)
+      .post('/api/v1/reservations/create')
+      .send({
+        name: 'Test User',
+        email: 'test@example.com',
+        phone: '123456789',
+        checkin: '2026-08-10',
+        checkout: '2026-08-12',
+        guests: '2',
+        roomName: 'Deluxe Room',
+        roomId: 'room-123'
+      })
+
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual({
+      message: 'Error creating reservation'
+    })
+  })
+
+  test('DELETE /api/v1/reservations/delete/:id handles delete errors', async () => {
+    mockFindByIdAndDelete.mockRejectedValue(new Error('Delete error'))
+
+    const response = await request(app).delete('/api/v1/reservations/delete/123')
+
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual({
+      message: 'Error deleting reservation'
+    })
+  })
 })
