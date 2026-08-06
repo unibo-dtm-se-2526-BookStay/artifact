@@ -5,9 +5,21 @@ info:
   version: 1.0.0
   description: API for the BookStay hotel booking application
 
+servers:
+  - url: http://localhost:4000
+    description: Local development server
+
+tags:
+  - name: Health
+  - name: Hotels
+  - name: Reservations
+  - name: Users
+
 paths:
   /api/v1/health:
     get:
+      tags:
+        - Health
       summary: Check API health
       operationId: getHealth
       responses:
@@ -18,3 +30,331 @@ paths:
               schema:
                 type: string
                 example: API Working!
+
+  /api/v1/hotels/add:
+    post:
+      tags:
+        - Hotels
+      summary: Create a hotel room
+      operationId: createHotel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HotelCreateInput'
+      responses:
+        '200':
+          description: Hotel creation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+
+  /api/v1/hotels/list:
+    get:
+      tags:
+        - Hotels
+      summary: List hotel rooms
+      operationId: listHotels
+      responses:
+        '200':
+          description: Hotel list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  hotels:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Hotel'
+
+  /api/v1/hotels/remove:
+    post:
+      tags:
+        - Hotels
+      summary: Remove a hotel room
+      operationId: removeHotel
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - _id
+              properties:
+                _id:
+                  type: string
+                  example: 66b123456789abcd12345678
+      responses:
+        '200':
+          description: Hotel removal result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+
+  /api/v1/hotels/rooms/{id}:
+    get:
+      tags:
+        - Hotels
+      summary: Get one hotel room
+      operationId: getHotel
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Hotel lookup result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  hotel:
+                    $ref: '#/components/schemas/Hotel'
+                  message:
+                    type: string
+                    example: Hotel not found
+
+  /api/v1/reservations/create:
+    post:
+      tags:
+        - Reservations
+      summary: Create a reservation
+      operationId: createReservation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReservationCreateInput'
+      responses:
+        '200':
+          description: Reservation creation result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Reservation created successfully
+                  reservation:
+                    $ref: '#/components/schemas/Reservation'
+
+  /api/v1/reservations/get:
+    get:
+      tags:
+        - Reservations
+      summary: List reservations
+      operationId: listReservations
+      responses:
+        '200':
+          description: Reservation list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  reservations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Reservation'
+
+  /api/v1/reservations/delete/{id}:
+    delete:
+      tags:
+        - Reservations
+      summary: Delete a reservation
+      operationId: deleteReservation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Reservation deletion result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Reservation deleted successfully
+
+  /api/v1/users/admin:
+    post:
+      tags:
+        - Users
+      summary: Admin login
+      operationId: adminLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: admin@example.com
+                password:
+                  type: string
+                  example: password123
+      responses:
+        '200':
+          description: Admin login result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
+                  message:
+                    type: string
+                    example: Invalid login details
+
+components:
+  schemas:
+    MessageResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        message:
+          type: string
+          example: Operation completed successfully
+
+    Hotel:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 66b123456789abcd12345678
+        name:
+          type: string
+          example: Deluxe Room
+        price:
+          type: number
+          example: 120
+        description:
+          type: string
+          example: A comfortable room for two guests
+        image:
+          type: string
+          example: https://example.com/hotel.jpg
+        date:
+          type: number
+          example: 1786000000000
+
+    HotelCreateInput:
+      type: object
+      required:
+        - name
+        - price
+        - description
+      properties:
+        name:
+          type: string
+          example: Deluxe Room
+        price:
+          type: number
+          example: 120
+        description:
+          type: string
+          example: A comfortable room for two guests
+
+    Reservation:
+      type: object
+      properties:
+        _id:
+          type: string
+          example: 66b123456789abcd12345678
+        name:
+          type: string
+          example: Test User
+        email:
+          type: string
+          format: email
+          example: test@example.com
+        phone:
+          type: string
+          example: '123456789'
+        checkin:
+          type: string
+          example: '2026-08-10'
+        checkout:
+          type: string
+          example: '2026-08-12'
+        guests:
+          type: string
+          example: '2'
+        roomName:
+          type: string
+          example: Deluxe Room
+        roomId:
+          type: string
+          example: room-123
+
+    ReservationCreateInput:
+      type: object
+      required:
+        - name
+        - email
+        - phone
+        - checkin
+        - checkout
+        - guests
+        - roomName
+        - roomId
+      properties:
+        name:
+          type: string
+          example: Test User
+        email:
+          type: string
+          format: email
+          example: test@example.com
+        phone:
+          type: string
+          example: '123456789'
+        checkin:
+          type: string
+          example: '2026-08-10'
+        checkout:
+          type: string
+          example: '2026-08-12'
+        guests:
+          type: string
+          example: '2'
+        roomName:
+          type: string
+          example: Deluxe Room
+        roomId:
+          type: string
+          example: room-123
