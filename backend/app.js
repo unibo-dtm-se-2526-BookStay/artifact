@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import hotelRouter from './routes/hotelRoute.js'
 import reservationRouter from './routes/reservationRoute.js'
+import userRouter from './routes/userRoute.js'
 
 const app = express()
 
@@ -14,6 +15,7 @@ app.get('/api/v1/health', (req, res) => {
 
 app.use('/api/v1/hotels', hotelRouter)
 app.use('/api/v1/reservations', reservationRouter)
+app.use('/api/v1/users', userRouter)
 
 app.use((req, res) => {
   res.status(404).json({
