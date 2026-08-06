@@ -108,8 +108,16 @@ Current tested areas:
 - Multer upload middleware configuration.
 - Admin authentication middleware.
 - Admin login route.
+- Reservation route success and error paths.
+- Hotel route list, create, remove, and single-room paths.
 
 Run tests before committing backend changes.
+
+Current coverage is above 80%:
+
+```text
+All files: 88.03%
+```
 
 ## Project checklist notes
 
@@ -117,7 +125,7 @@ Run tests before committing backend changes.
 - Do not commit generated files such as `node_modules` or coverage output.
 - Prefer small, focused commits with Conventional Commit messages.
 - Add or update tests when adding backend behavior.
-- User-facing authentication routes are still in progress.
+- Backend tutorial foundation is complete through admin login.
 - Docker, CI, coverage threshold enforcement, and OpenAPI expansion are still future checklist items.
 
 The OpenAPI specification is located at `docs/openapi.yaml`.
