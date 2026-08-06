@@ -4,13 +4,18 @@ import { jest } from '@jest/globals'
 const mockFind = jest.fn()
 const mockFindById = jest.fn()
 const mockFindByIdAndDelete = jest.fn()
+const mockSave = jest.fn()
+const mockHotelModel = jest.fn().mockImplementation((data) => ({
+  ...data,
+  save: mockSave
+}))
+
+mockHotelModel.find = mockFind
+mockHotelModel.findById = mockFindById
+mockHotelModel.findByIdAndDelete = mockFindByIdAndDelete
 
 jest.unstable_mockModule('../models/hotelModels.js', () => ({
-  default: {
-    find: mockFind,
-    findById: mockFindById,
-    findByIdAndDelete: mockFindByIdAndDelete
-  }
+  default: mockHotelModel
 }))
 
 const { default: app } = await import('../app.js')
@@ -20,6 +25,7 @@ describe('Hotel routes', () => {
     mockFind.mockResolvedValue([])
     mockFindById.mockResolvedValue(null)
     mockFindByIdAndDelete.mockResolvedValue({})
+    mockSave.mockResolvedValue()
   })
 
   afterEach(() => {
@@ -36,6 +42,31 @@ describe('Hotel routes', () => {
       success: true,
       hotels: []
     })
+  })
+
+  test('POST /api/v1/hotels/add creates a hotel without uploaded image', async () => {
+    const response = await request(app)
+      .post('/api/v1/hotels/add')
+      .send({
+        name: 'Test Hotel',
+        price: '120',
+        description: 'A hotel used for testing'
+      })
+
+    expect(response.status).toBe(200)
+    expect(response.body).toEqual({
+      success: true,
+      message: 'Hotel room added successfully'
+    })
+    expect(mockHotelModel).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: 'Test Hotel',
+        price: 120,
+        description: 'A hotel used for testing',
+        image: 'https://via.placeholder.com/150'
+      })
+    )
+    expect(mockSave).toHaveBeenCalled()
   })
 
   test('POST /api/v1/hotels/remove removes a hotel', async () => {
