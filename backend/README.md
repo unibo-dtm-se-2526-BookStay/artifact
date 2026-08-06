@@ -26,6 +26,9 @@ Create `.env` from `.env.example` and configure:
 - `CLOUDINARY_NAME`: Cloudinary product-environment name.
 - `CLOUDINARY_API_KEY`: Cloudinary API key.
 - `CLOUDINARY_API_SECRET`: Cloudinary API secret.
+- `JWT_SECRET`: secret key used to sign and verify admin JWTs.
+- `ADMIN_EMAIL`: admin login email.
+- `ADMIN_PASSWORD`: admin login password.
 
 Never commit `.env` or expose database and external-service credentials.
 
@@ -76,6 +79,12 @@ GET /api/v1/reservations/get
 DELETE /api/v1/reservations/delete/:id
 ```
 
+User/admin endpoints:
+
+```text
+POST /api/v1/users/admin
+```
+
 All new API routes should stay under the `/api/v1` prefix.
 
 ## Testing
@@ -97,6 +106,8 @@ Current tested areas:
 - Hotel list route.
 - Reservation model validation.
 - Multer upload middleware configuration.
+- Admin authentication middleware.
+- Admin login route.
 
 Run tests before committing backend changes.
 
@@ -106,7 +117,7 @@ Run tests before committing backend changes.
 - Do not commit generated files such as `node_modules` or coverage output.
 - Prefer small, focused commits with Conventional Commit messages.
 - Add or update tests when adding backend behavior.
-- Admin authentication and user routes are still in progress.
+- User-facing authentication routes are still in progress.
 - Docker, CI, coverage threshold enforcement, and OpenAPI expansion are still future checklist items.
 
 The OpenAPI specification is located at `docs/openapi.yaml`.
