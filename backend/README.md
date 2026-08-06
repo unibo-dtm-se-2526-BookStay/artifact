@@ -68,6 +68,14 @@ POST /api/v1/hotels/remove
 GET /api/v1/hotels/rooms/:id
 ```
 
+Reservation endpoints:
+
+```text
+POST /api/v1/reservations/create
+GET /api/v1/reservations/get
+DELETE /api/v1/reservations/delete/:id
+```
+
 All new API routes should stay under the `/api/v1` prefix.
 
 ## Testing
@@ -87,6 +95,8 @@ Current tested areas:
 - Cloudinary configuration.
 - Hotel model validation.
 - Hotel list route.
+- Reservation model validation.
+- Multer upload middleware configuration.
 
 Run tests before committing backend changes.
 
@@ -96,6 +106,7 @@ Run tests before committing backend changes.
 - Do not commit generated files such as `node_modules` or coverage output.
 - Prefer small, focused commits with Conventional Commit messages.
 - Add or update tests when adding backend behavior.
+- Admin authentication and user routes are still in progress.
 - Docker, CI, coverage threshold enforcement, and OpenAPI expansion are still future checklist items.
 
 The OpenAPI specification is located at `docs/openapi.yaml`.
